@@ -291,6 +291,7 @@ class BasicAgentAA(BustersAgent):
         # Map walls
         print("Map:")
         print(gameState.getWalls())
+
         # Score
         print("Score: ", gameState.getScore())
 
@@ -300,7 +301,7 @@ class BasicAgentAA(BustersAgent):
         move = Directions.STOP
         legal = gameState.getLegalActions(0)  # Legal position from the pacman
 
-        menor = gameState.data.ghostDistances[0]
+        menor = 3000
         posicion = 0
         for x in range(0, gameState.getNumAgents() - 1):
             if gameState.data.ghostDistances[x] == None:
@@ -312,6 +313,9 @@ class BasicAgentAA(BustersAgent):
         posicionPacMan = gameState.getPacmanPosition()
         print("Fantasma: ", posicionFantasma[0], posicionFantasma[1])
         print("PacMan: ", posicionPacMan[0], posicionPacMan[1])
+        print(gameState.getWalls()[
+            posicionPacMan[0]][posicionPacMan[1] + 1])
+
         if (posicionPacMan[0] > posicionFantasma[0]) and Directions.WEST in legal:
             move = Directions.WEST
         if (posicionPacMan[0] < posicionFantasma[0]) and Directions.EAST in legal:
@@ -320,6 +324,10 @@ class BasicAgentAA(BustersAgent):
             move = Directions.NORTH
         if (posicionPacMan[1] > posicionFantasma[1]) and Directions.SOUTH in legal:
             move = Directions.SOUTH
+
+        # kasdn z,c
+        if(gameState.getWalls()[posicionPacMan[0]][posicionPacMan[1] + 1] == True):
+            move = Directions.EAST
         return move
 
     def printLineData(self, gameState):
