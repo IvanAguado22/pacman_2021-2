@@ -292,7 +292,6 @@ class BasicAgentAA(BustersAgent):
         # Map walls
         print("Map:")
         print(gameState.getWalls())
-
         # Score
         print("Score: ", gameState.getScore())
 
@@ -303,22 +302,16 @@ class BasicAgentAA(BustersAgent):
         legal = gameState.getLegalActions(0)  # Legal position from the pacman
         global prevMove
 
-        menor = 3000
-        posicion = 0
+        distancia_menor = 3000
+        posicion_array = 0
         for x in range(0, gameState.getNumAgents() - 1):
             if gameState.data.ghostDistances[x] == None:
                 gameState.data.ghostDistances[x] = 3000
-            elif gameState.data.ghostDistances[x] < menor:
-                menor = gameState.data.ghostDistances[x]
-                posicion = x
-        posicionFantasma = gameState.getGhostPositions()[posicion]
+            elif gameState.data.ghostDistances[x] < distancia_menor:
+                distancia_menor = gameState.data.ghostDistances[x]
+                posicion_array = x
+        posicionFantasma = gameState.getGhostPositions()[posicion_array]
         posicionPacMan = gameState.getPacmanPosition()
-
-        print("Fantasma: ", posicionFantasma[0], posicionFantasma[1])
-        print("PacMan: ", posicionPacMan[0], posicionPacMan[1])
-        print(gameState.getWalls()[
-            posicionPacMan[0]][posicionPacMan[1] + 1])
-        print(prevMove)
 
         # NORTH-EAST
         if(posicionPacMan[1] < posicionFantasma[1] and posicionPacMan[0] < posicionFantasma[0]):
@@ -346,6 +339,7 @@ class BasicAgentAA(BustersAgent):
                 move = Directions.SOUTH
                 prevMove = "south"
                 return move
+
         # NORTH-WEST
         if(posicionPacMan[1] < posicionFantasma[1] and posicionPacMan[0] > posicionFantasma[0]):
             if(prevMove == "south" and Directions.SOUTH in legal):
@@ -426,6 +420,7 @@ class BasicAgentAA(BustersAgent):
                 move = Directions.NORTH
                 prevMove = "north"
                 return move
+
         # NORTH
         if (posicionPacMan[1] < posicionFantasma[1]):
             if(prevMove == "south" and Directions.SOUTH in legal):
@@ -452,6 +447,7 @@ class BasicAgentAA(BustersAgent):
                 move = Directions.SOUTH
                 prevMove = "south"
                 return move
+
         # EAST
         if (posicionPacMan[0] < posicionFantasma[0]):
             if(prevMove == "west" and Directions.WEST in legal):
@@ -478,6 +474,7 @@ class BasicAgentAA(BustersAgent):
                 move = Directions.WEST
                 prevMove = "west"
                 return move
+
         # SOUTH
         if (posicionPacMan[1] > posicionFantasma[1]):
             if(prevMove == "north" and Directions.NORTH in legal):
@@ -504,6 +501,7 @@ class BasicAgentAA(BustersAgent):
                 move = Directions.NORTH
                 prevMove = "north"
                 return move
+
         # WEST
         if (posicionPacMan[0] > posicionFantasma[0]):
             if(Directions.EAST in legal and prevMove == "east"):
@@ -532,5 +530,4 @@ class BasicAgentAA(BustersAgent):
                 return move
 
     def printLineData(self, gameState):
-
         return "Pacman position: " + str(gameState.getPacmanPosition()) + "," + "Ghosts distances: " + str(gameState.data.ghostDistances) + "," + "Living ghosts: " + str(gameState.getLivingGhosts()) + "," + "Ghosts positions: " + str(gameState.getGhostPositions()) + "," + "Ghosts distances: " + str(gameState.data.ghostDistances) + "," + "Pac dots: " + str(gameState.getNumFood()) + "," + "Distance nearest pac dots: " + str(gameState.getDistanceNearestFood()) + "," + "Score: " + str(gameState.getScore())
