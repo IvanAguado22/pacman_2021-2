@@ -25,6 +25,7 @@ from game import Directions
 from keyboardAgents import KeyboardAgent
 import inference
 import busters
+prevMove = ""
 
 
 class NullGraphics(object):
@@ -300,6 +301,7 @@ class BasicAgentAA(BustersAgent):
         self.printInfo(gameState)
         move = Directions.STOP
         legal = gameState.getLegalActions(0)  # Legal position from the pacman
+        global prevMove
 
         menor = 3000
         posicion = 0
@@ -311,24 +313,223 @@ class BasicAgentAA(BustersAgent):
                 posicion = x
         posicionFantasma = gameState.getGhostPositions()[posicion]
         posicionPacMan = gameState.getPacmanPosition()
+
         print("Fantasma: ", posicionFantasma[0], posicionFantasma[1])
         print("PacMan: ", posicionPacMan[0], posicionPacMan[1])
         print(gameState.getWalls()[
             posicionPacMan[0]][posicionPacMan[1] + 1])
+        print(prevMove)
 
-        if (posicionPacMan[0] > posicionFantasma[0]) and Directions.WEST in legal:
-            move = Directions.WEST
-        if (posicionPacMan[0] < posicionFantasma[0]) and Directions.EAST in legal:
-            move = Directions.EAST
-        if (posicionPacMan[1] < posicionFantasma[1]) and Directions.NORTH in legal:
-            move = Directions.NORTH
-        if (posicionPacMan[1] > posicionFantasma[1]) and Directions.SOUTH in legal:
-            move = Directions.SOUTH
+        # NORTH-EAST
+        if(posicionPacMan[1] < posicionFantasma[1] and posicionPacMan[0] < posicionFantasma[0]):
+            if(prevMove == "south" and Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(Directions.NORTH in legal and prevMove != "south"):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(Directions.WEST in legal and prevMove == "west"):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            if(Directions.EAST in legal and prevMove != "west"):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            elif(Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            elif(Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+        # NORTH-WEST
+        if(posicionPacMan[1] < posicionFantasma[1] and posicionPacMan[0] > posicionFantasma[0]):
+            if(prevMove == "south" and Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(Directions.NORTH in legal and prevMove != "south"):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(prevMove == "east" and Directions.EAST in legal):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            if(Directions.WEST in legal and prevMove != "east"):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            elif(Directions.EAST in legal):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            elif(Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
 
-        # kasdn z,c
-        if(gameState.getWalls()[posicionPacMan[0]][posicionPacMan[1] + 1] == True):
-            move = Directions.EAST
-        return move
+        # SOUTH-EAST
+        if(posicionPacMan[1] > posicionFantasma[1] and posicionPacMan[0] < posicionFantasma[0]):
+            if(Directions.NORTH in legal and prevMove == "north"):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(Directions.SOUTH in legal and prevMove != "north"):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(Directions.WEST in legal and prevMove == "west"):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            if(Directions.EAST in legal and prevMove != "west"):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            elif(Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            elif(Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+
+        # SOUTH-WEST
+        if(posicionPacMan[1] > posicionFantasma[1] and posicionPacMan[0] > posicionFantasma[0]):
+            if(prevMove == "north" and Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(Directions.SOUTH in legal and prevMove != "north"):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(prevMove == "east" and Directions.EAST in legal):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            if(Directions.WEST in legal and prevMove != "east"):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            elif(Directions.EAST in legal):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            elif(Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+        # NORTH
+        if (posicionPacMan[1] < posicionFantasma[1]):
+            if(prevMove == "south" and Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(Directions.NORTH in legal and prevMove != "south"):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(prevMove == "west" and Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            if(Directions.EAST in legal and prevMove != "west"):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            elif(Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            elif(Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+        # EAST
+        if (posicionPacMan[0] < posicionFantasma[0]):
+            if(prevMove == "west" and Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            if(Directions.EAST in legal and prevMove != "west"):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            if(prevMove == "north" and Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(Directions.SOUTH in legal and prevMove != "north"):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            elif(Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            elif(Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+        # SOUTH
+        if (posicionPacMan[1] > posicionFantasma[1]):
+            if(prevMove == "north" and Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            if(Directions.SOUTH in legal and prevMove != "north"):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(Directions.WEST in legal and prevMove == "west"):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            if(Directions.EAST in legal and prevMove != "west"):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            elif(Directions.WEST in legal):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            elif(Directions.NORTH in legal):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+        # WEST
+        if (posicionPacMan[0] > posicionFantasma[0]):
+            if(Directions.EAST in legal and prevMove == "east"):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
+            if(Directions.WEST in legal and prevMove != "east"):
+                move = Directions.WEST
+                prevMove = "west"
+                return move
+            if(prevMove == "south" and Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            if(Directions.NORTH in legal and prevMove != "south"):
+                move = Directions.NORTH
+                prevMove = "north"
+                return move
+            elif(Directions.SOUTH in legal):
+                move = Directions.SOUTH
+                prevMove = "south"
+                return move
+            elif(Directions.EAST in legal):
+                move = Directions.EAST
+                prevMove = "east"
+                return move
 
     def printLineData(self, gameState):
 
