@@ -106,6 +106,7 @@ class BustersAgent(object):
         "By default, a BustersAgent just stops.  This should be overridden."
         return Directions.STOP
 
+
 class BustersKeyboardAgent(BustersAgent, KeyboardAgent):
     "An agent controlled by the keyboard that displays beliefs about ghost positions."
 
@@ -263,6 +264,12 @@ class BasicAgentAA(BustersAgent):
         # Score
         print("Score: ", gameState.getScore())
         
+        menor = gameState.data.ghostDistances[0]
+        for x in range(0, 4):
+            if gameState.data.ghostDistances[x] < menor:
+                menor = gameState.data.ghostDistances[x]
+        print("Closest: ", menor)
+        
         
     def chooseAction(self, gameState):
         self.countActions = self.countActions + 1
@@ -277,4 +284,6 @@ class BasicAgentAA(BustersAgent):
         return move
 
     def printLineData(self, gameState):
-        return "XXXXXXXXXX"
+        
+        return "Pacman position: " + str(gameState.getPacmanPosition()) + "," + "Ghosts distances: " + str(gameState.data.ghostDistances) + "," + "Living ghosts: " + str(gameState.getLivingGhosts()) + "," + "Ghosts positions: " + str(gameState.getGhostPositions()) + "," + "Ghosts distances: " + str(gameState.data.ghostDistances) + "," + "Pac dots: " + str(gameState.getNumFood()) + "," + "Distance nearest pac dots: " + str(gameState.getDistanceNearestFood()) + "," + "Score: " + str(gameState.getScore())
+        

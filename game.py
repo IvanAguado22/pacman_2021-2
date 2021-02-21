@@ -53,6 +53,8 @@ class Agent(object):
         """
         raiseNotDefined()
 
+
+
 class Directions(object):
     NORTH = 'North'
     SOUTH = 'South'
@@ -610,7 +612,7 @@ class Game(object):
                         self._agentCrash(i, quiet=False)
                         self.unmute()
                         return
-                else:
+                else: 
                     agent.registerInitialState(self.state.deepCopy())
                 ## TODO: could this exceed the total time
                 self.unmute()
@@ -641,17 +643,21 @@ class Game(object):
                         self._agentCrash(agentIndex, quiet=False)
                         self.unmute()
                         return
-                else:
+                else: 
                     observation = agent.observationFunction(self.state.deepCopy())
+                    f = open('estadoPacMan.txt', 'a')
+                    f.write(agent.printLineData(observation) + '\n')
+                    f.close()
                 self.unmute()
             else:
-                observation = self.state.deepCopy()
+                observation = self.state.deepCopy()               
             # Solicit an action
             action = None
             step += 1
             self.mute(agentIndex)
             if self.catchExceptions:
                 try:
+                    
                     timed_func = TimeoutFunction(agent.getAction, int(self.rules.getMoveTimeout(agentIndex)) - int(move_time))
                     try:
                         start_time = time.time()
@@ -690,7 +696,7 @@ class Game(object):
                     self._agentCrash(agentIndex)
                     self.unmute()
                     return
-            else:
+            else:               
                 action = agent.getAction(observation)
             self.unmute()
 
